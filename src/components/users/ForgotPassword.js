@@ -8,6 +8,7 @@ import { ForgotPassword } from '../../store/modules/auth/actions/authAction';
 import Message from '../utils/Message';
 
 
+
 const PasswordForgot = () => {
 
   const currentState = useSelector((state) => state.Auth);
@@ -37,7 +38,7 @@ const PasswordForgot = () => {
   }
 
   return (
-    <div className="App">
+    <div className="App" id="page-container">
       <div>
         <Navigation />
       </div>
@@ -109,6 +110,7 @@ const PasswordForgot = () => {
             </CardBody>
           </Card>
         </div>
+        
       </div>
   );
 }

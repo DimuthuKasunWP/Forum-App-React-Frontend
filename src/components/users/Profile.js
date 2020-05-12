@@ -9,6 +9,7 @@ import Message from '../utils/Message';
 
 
 
+
 import Navigation from "../Navigation"
 
 const Profile = () => {
@@ -299,6 +300,7 @@ const Profile = () => {
       </Modal>
       </div>
     </div>
+    
   </Fragment>
   )
 }

@@ -1,5 +1,5 @@
 import React, { useEffect } from 'react'
-import { Link } from 'react-router-dom'
+import { Link } from 'react-router-dom'
 import { useSelector, useDispatch } from "react-redux";
 import './Posts.css';
 
@@ -24,9 +24,9 @@ const Posts = () => {
   let posts = postsSelector.posts.map((post) => {
     return (
       <div  className="mt-2 style-card" key={post.id}>
-         <Link to={'/posts/' + post.id} key={post.id}>
-          <Post post={post} key={post.id} />
-        </Link>
+         <Link to={'/posts/' + post.id} key={post.id}>
+          <Post post={post} key={post.id} />
+        </Link>
       </div>
     );
   })

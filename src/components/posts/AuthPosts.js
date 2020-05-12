@@ -1,5 +1,5 @@
 import React, { useEffect } from 'react'
-import { Link, Redirect } from 'react-router-dom'
+import { Link, Redirect } from 'react-router-dom'
 import { useSelector, useDispatch } from "react-redux";
 import { FaFilter } from 'react-icons/fa'
 
@@ -32,9 +32,9 @@ const AuthPosts = () => {
   let authPosts = postsSelector.authPosts.map(post => {
     return (
       <div  className="mt-2 style-card" key={post.id}>
-       <Link to={'/posts/' + post.id} key={post.id}>
-        <AuthPost post={post} key={post.id} />
-      </Link>
+       <Link to={'/posts/' + post.id} key={post.id}>
+        <AuthPost post={post} key={post.id} />
+      </Link>
     </div>
       );
   })

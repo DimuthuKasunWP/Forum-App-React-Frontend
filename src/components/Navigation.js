@@ -6,17 +6,17 @@ import { SignOut } from '../store/modules/auth/actions/authAction';
 import Default from '../Assets/default.png'
 import './Navigation.css'
 
-import {
-    Collapse,
-    Navbar,
-    NavbarToggler,
-    NavbarBrand,
-    Nav,
-    NavItem,
-    UncontrolledDropdown,
-    DropdownToggle,
-    DropdownMenu,
-    DropdownItem } from 'reactstrap';
+import {
+    Collapse,
+    Navbar,
+    NavbarToggler,
+    NavbarBrand,
+    Nav,
+    NavItem,
+    UncontrolledDropdown,
+    DropdownToggle,
+    DropdownMenu,
+    DropdownItem } from 'reactstrap';
 
 
 const Navigation = () => {
@@ -48,7 +48,7 @@ const Navigation = () => {
   const userProfile = isAuthenticated ?  `/profile/${currentState.Auth.currentUser.id}` : ""
 
   const SignedInLinks = (
-              <React.Fragment>
+              <React.Fragment>
                   <NavItem className="mt-2" style={{marginRight: "15px" }}>
                     <NavLink to="/createpost">Create Post</NavLink>
                   </NavItem>
@@ -89,10 +89,12 @@ const Navigation = () => {
 
   return (
     <div className="mb-3">
+    <div style={{"textAlign": "center"}}> Developed with <span role="img"> ❤️ </span> by <a className="link-style"  href="https://www.linkedin.com/in/dimuthu-kasun/" target="_blank">@DimuthuKasun</a></div>
       <Navbar color="light" light expand="md"> 
-          <NavbarBrand className="mx-auto" href="/">Seamflow</NavbarBrand>
-          <NavbarToggler onClick={() => setIsOpen(!isOpen) } /> 
-        <Collapse isOpen={isOpen} navbar> 
+        <NavbarBrand className="mx-auto" href="/"><span style={{ fontWeight: "bold"}}>SeamFlow</span></NavbarBrand>
+        
+        <NavbarToggler onClick={() => setIsOpen(!isOpen) } /> 
+        <Collapse isOpen={isOpen} navbar> 
           <Nav className="ml-auto" navbar>
             { isAuthenticated ? SignedInLinks: SignedOutLinks }
           </Nav>

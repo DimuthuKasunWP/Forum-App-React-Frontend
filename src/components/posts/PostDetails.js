@@ -13,6 +13,7 @@ import EditPost from './EditPost';
 import DeletePost from './DeletePost'
 
 
+
 const PostDetails = (props) => {
 
   const postID  = props.match.params.id
@@ -56,7 +57,7 @@ const PostDetails = (props) => {
   }
 
   return (
-    <div>
+    <div id="page-container">
       <Navigation />
       <div className="container">
         <div className="mt-5 style-card">
@@ -104,6 +105,7 @@ const PostDetails = (props) => {
           }
         </div>
       </div>
+      
     </div>
   )
 }

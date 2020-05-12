@@ -8,6 +8,7 @@ import Navigation from '../Navigation'
 import { SignUp } from '../../store/modules/auth/actions/authAction';
 
 
+
 const Register = () => {
 
   const currentState = useSelector((state) => state.Auth);
@@ -41,7 +42,7 @@ const Register = () => {
   }
 
     return (
-      <div className="App">
+      <div className="App" id="page-container">
         <div>
           <Navigation />
         </div>
@@ -123,6 +124,7 @@ const Register = () => {
             </CardBody>
           </Card>
         </div>
+        
       </div>
     );
 }
