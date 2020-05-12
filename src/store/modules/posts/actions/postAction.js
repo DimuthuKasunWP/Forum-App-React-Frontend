@@ -1,133 +1,107 @@
 import API_ROUTE from "../../../../apiRoute";
 import axios from 'axios'
-import setAuthorizationToken  from "../../../../authorization/authorization";
-import { BEFORE_STATE, SIGNUP_SUCCESS, SIGNUP_ERROR, LOGIN_SUCCESS, LOGIN_ERROR, LOGOUT_SUCCESS, UPDATE_USER_AVATAR, UPDATE_USER_SUCCESS, UPDATE_USER_ERROR, UPDATE_USER_AVATAR_ERROR, BEFORE_AVATAR_STATE, BEFORE_USER_STATE, FORGOT_PASSWORD_SUCCESS, FORGOT_PASSWORD_ERROR, RESET_PASSWORD_SUCCESS, RESET_PASSWORD_ERROR, DELETE_USER_SUCCESS, DELETE_USER_ERROR } from '../authTypes'
+import { BEFORE_STATE_POST, FETCH_POSTS, FETCH_POSTS_ERROR, GET_POST_SUCCESS, GET_POST_ERROR, CREATE_POST_SUCCESS, CREATE_POST_ERROR, UPDATE_POST_SUCCESS, UPDATE_POST_ERROR, DELETE_POST_SUCCESS, DELETE_POST_ERROR, FETCH_AUTH_POSTS, FETCH_AUTH_POSTS_ERROR  } from '../postsTypes'
 import  {history} from '../../../../history'
 
+ 
+export const fetchPosts = () => {
 
-export const SignIn = (credentials) => {
-  return async (dispatch) => {
-      dispatch({ type: BEFORE_STATE }) 
-    try {
-      const res = await axios.post(`${API_ROUTE}/login`, credentials)
-      let userData = res.data.response
-      localStorage.setItem("token", userData.token)
-      localStorage.setItem('user_data', JSON.stringify(userData));
-      setAuthorizationToken(userData.token)
-      dispatch({ type: LOGIN_SUCCESS, payload: userData })
-    } catch(err) {
-      dispatch({ type: LOGIN_ERROR, payload: err.response.data.error })
-    }
-  }
-}
-
-export const SignOut = () => {
   return (dispatch) => {
-    localStorage.removeItem("token")
-    setAuthorizationToken(false)
-    dispatch({ type: LOGOUT_SUCCESS })
-    window.localStorage.clear(); //update the localstorage
-    history.push('/login');
+
+    axios.get(`${API_ROUTE}/posts`).then(res => {
+      dispatch({ type: FETCH_POSTS, payload: res.data.response })
+    }).catch(err => {
+      dispatch({ type: FETCH_POSTS_ERROR, payload: err.response ? err.respons.data.error : "" })
+    })
   }
 }
 
-export const SignUp = (newUser) => {
-    return async (dispatch) => {
-        dispatch({ type: BEFORE_STATE }) 
-      try {
-        await axios.post(`${API_ROUTE}/users`, newUser);
-        dispatch({ type: SIGNUP_SUCCESS })
-        history.push('/login');
-      } catch(err) {
-        dispatch({ type: SIGNUP_ERROR, payload: err.response.data.error })
-    }
-  }
-}
-
-export const updateUserAvatar = (updateUserAvatar) => {
-  return async (dispatch, getState) => {
-    dispatch({ type: BEFORE_AVATAR_STATE })
-    const { id } = getState().Auth.currentUser
-    try {
-      const res = await axios.put(`${API_ROUTE}/avatar/users/${id}`, updateUserAvatar, {
-        headers: {
-          'Content-Type': 'multipart/form-data'
-        },
-      });
-      let updatedUser = res.data.response
-      window.localStorage.setItem('user_data', JSON.stringify(updatedUser)); //update the localstorage
-      dispatch({ type: UPDATE_USER_AVATAR, payload: updatedUser })
-    } catch (err) {
-      dispatch({ type: UPDATE_USER_AVATAR_ERROR, payload: err.response.data.error })
-    }
-  }
-}
-
-export const updateUser = (updateUser, clearInput) => {
-
-  return async (dispatch, getState) => {
-    dispatch({ type: BEFORE_USER_STATE })
-    const { currentUser } = getState().Auth
-    try {
-      const res = await axios.put(`${API_ROUTE}/users/${currentUser.id}`, updateUser);
-      let updatedUser = res.data.response
-
-      dispatch({ type: UPDATE_USER_SUCCESS, payload: updatedUser })
-      window.localStorage.setItem('user_data', JSON.stringify(updatedUser)); //update the localstorages
-      clearInput()
-    } catch (err) {
-      dispatch({ type: UPDATE_USER_ERROR, payload: err.response.data.error })
-    }
-  }
-}
-
-export const deleteUser = (id)  => {
-
-  return async dispatch => {
-    dispatch({ type: BEFORE_STATE })
-    try {
-      const res = await axios.delete(`${API_ROUTE}/users/${id}`);
-      let deleteMessage = res.data.response
-      dispatch({ type: DELETE_USER_SUCCESS, payload: deleteMessage })
-      window.localStorage.clear(); //update the localstorage
-      window.location.href = "/"
-    } catch (err) {
-      dispatch({ type: DELETE_USER_ERROR, payload: err.response.data.error })
-    }
-  }
-}
-
-
-export const ForgotPassword = (userEmail, clearInput) => {
+export const fetchPost = id => {
 
   return async (dispatch) => {
 
-    dispatch({ type: BEFORE_STATE })
-    
+    dispatch({ type: BEFORE_STATE_POST })
+
     try {
-      const res = await axios.post(`${API_ROUTE}/password/forgot`, userEmail);
-      let passwordRequest = res.data.response
-      dispatch({ type: FORGOT_PASSWORD_SUCCESS, payload: passwordRequest })
-      clearInput()
-    } catch (err) {
-      dispatch({ type: FORGOT_PASSWORD_ERROR, payload: err.response.data.error })
+      const res  = await axios.get(`${API_ROUTE}/posts/${id}`)
+      dispatch({ type: GET_POST_SUCCESS, payload: res.data.response })
+    } catch(err){
+      dispatch({ type: GET_POST_ERROR, payload: err.response.data.error })
+      history.push('/'); //incase the user manually enter the param that dont exist
     }
   }
 }
 
-export const ResetPassword = (details, clearInput) => {
+export const fetchAuthPosts = id => {
 
   return async (dispatch) => {
-    
-    dispatch({ type: BEFORE_STATE })
+
+    dispatch({ type: BEFORE_STATE_POST })
 
     try {
-      const res = await axios.post(`${API_ROUTE}/password/reset`, details);
-      let passwordRequest = res.data.response
-      dispatch({ type: RESET_PASSWORD_SUCCESS, payload: passwordRequest })
-      clearInput()
-    } catch (err) {
-      dispatch({ type: RESET_PASSWORD_ERROR, payload: err.response.data.error })
+      const res  = await axios.get(`${API_ROUTE}/user_posts/${id}`)
+      dispatch({ type: FETCH_AUTH_POSTS, payload: res.data.response })
+    } catch(err){
+      dispatch({ type: FETCH_AUTH_POSTS_ERROR, payload: err.response.data.error })
+    }
+  }
+}
+
+export const createPost = (createPost) => {
+  return async (dispatch) => {
+
+    dispatch({ type: BEFORE_STATE_POST })
+
+    try {
+      const res = await axios.post(`${API_ROUTE}/posts`, createPost)
+      dispatch({ 
+        type: CREATE_POST_SUCCESS,  
+        payload: res.data.response
+      })
+      history.push('/');
+    } catch(err) {
+      dispatch({ type: CREATE_POST_ERROR, payload: err.response.data.error })
+    }
+  }
+}
+
+export const updatePost = (updateDetails, updateSuccess) => {
+
+  return async (dispatch) => {
+
+    dispatch({ type: BEFORE_STATE_POST })
+
+    try {
+      const res = await axios.put(`${API_ROUTE}/posts/${updateDetails.id}`, updateDetails)
+      dispatch({ 
+        type: UPDATE_POST_SUCCESS,
+        payload: res.data.response
+      })
+      updateSuccess()
+    } catch(err) {
+      dispatch({ type: UPDATE_POST_ERROR, payload: err.response.data.error })
+    }
+  }
+}
+
+export const deletePost = (id) => {
+
+  return async (dispatch) => {
+
+    dispatch({ type: BEFORE_STATE_POST })
+
+    try {
+      const res = await axios.delete(`${API_ROUTE}/posts/${id}`)
+      dispatch({ 
+        type: DELETE_POST_SUCCESS,
+        payload: {
+          deletedID: id,
+          message: res.data.response
+        } 
+      })
+      history.push('/');
+    } catch(err) {
+      dispatch({ type: DELETE_POST_ERROR, payload: err.response.data.error })
     }
   }
 }
