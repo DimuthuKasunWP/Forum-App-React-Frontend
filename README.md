@@ -47,4 +47,3 @@ React client that consumes the API: `https://github.com/DimuthuKasunWP/Forum-App
 ## Author
 
 - Dimuthu Kasun
-- medium: medium.com/@kasunwpdimuthu 
