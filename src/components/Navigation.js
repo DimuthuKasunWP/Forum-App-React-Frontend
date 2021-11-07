@@ -3,7 +3,7 @@ import { NavLink, Link } from 'react-router-dom';
 import { useSelector, useDispatch } from "react-redux";
 
 import { SignOut } from '../store/modules/auth/actions/authAction';
-import Default from '../Assets/default.png'
+import Default from '../assets/default.png'
 import './Navigation.css'
 
 import {
@@ -91,7 +91,7 @@ const Navigation = () => {
     <div className="mb-3">
     <div style={{"textAlign": "center"}}> Developed with <span role="img"> ❤️ </span> by <a className="link-style"  href="https://www.linkedin.com/in/dimuthu-kasun/" target="_blank">@DimuthuKasun</a></div>
       <Navbar color="light" light expand="md"> 
-        <NavbarBrand className="mx-auto" href="/"><span style={{ fontWeight: "bold"}}>SeamFlow</span></NavbarBrand>
+        <NavbarBrand className="mx-auto" href="/"><span style={{ fontWeight: "bold"}}>My Forum</span></NavbarBrand>
         
         <NavbarToggler onClick={() => setIsOpen(!isOpen) } /> 
         <Collapse isOpen={isOpen} navbar> 
